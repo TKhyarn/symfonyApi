@@ -12,3 +12,7 @@ logout:
 anaxago_core_registration:
     path: /register
     defaults: { _controller: AnaxagoCoreBundle:Security:registration }
+
+api:
+    resource: "@AnaxagoCoreBundle/Controller/"
+    type:     annotation
