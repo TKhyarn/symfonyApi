@@ -42,6 +42,13 @@ class Project
      */
     private $description;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="text")
+     */
+    private $status;
+
 
     /**
      * Get id
@@ -124,5 +131,28 @@ class Project
     {
         return $this->description;
     }
-}
 
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return Project
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+}
