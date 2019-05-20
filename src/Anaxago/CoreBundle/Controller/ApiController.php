@@ -9,6 +9,7 @@
 namespace Anaxago\CoreBundle\Controller;
 
 use Anaxago\CoreBundle\Entity\Project;
+use Anaxago\CoreBundle\Entity\Interest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
@@ -19,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Class ApiController
  * @Route ("/api")
@@ -34,7 +36,7 @@ class ApiController extends Controller
     {
         $projects = $entityManager->getRepository(Project::class)->findAll();
         if (empty($projects)) {
-            return new JsonResponse(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
+            return View::create(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
         $view = View::create($projects);
         $view->setFormat('json');
@@ -47,9 +49,24 @@ class ApiController extends Controller
     public function getProjectAction(Request $request, EntityManagerInterface $entityManager) {
         $project = $entityManager->getRepository(Project::class)->find($request->get('id'));
         if (empty($projects)) {
-            return new JsonResponse(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
+            return View::create(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
         $view = View::create($project);
+        $view->setFormat('json');
+        return $view;
+    }
+
+    /**
+     * @Rest\View()
+     * @Get("/interests/{id}")
+     */
+    public function getInterestAction(Request $request, EntityManagerInterface $entityManager)
+    {
+        $interest = $entityManager->getRepository(Interest::class)->getInterests(intval($request->get('id')));
+        if (empty($interest)) {
+            return new JsonResponse(['message' => 'Interests not found'], Response::HTTP_NOT_FOUND);
+        }
+        $view = View::create($interest);
         $view->setFormat('json');
         return $view;
     }
