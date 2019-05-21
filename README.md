@@ -42,17 +42,17 @@ Liste l'ensemble des projets et leurs informations de la table project au format
 ##### Get("api/projects/{id}")
 Retourne au format json les informations du projet portant l'identifiant {id}
 
-##### Post("api/api/auth-tokens")
+##### Post("api/auth-tokens")
 Retourne un token d'identification à rajouter dans le header : X-Auth-Token => value
 Format du json à envoyer: 
 {
 	"login":"test@mail.com",
 	"password":"test"
 }
-##### Get("/interests")
+##### Get("api//interests")
 Liste les interets de l'utilisateur identifié
 
-##### POST("/interests")
+##### POST("api//interests")
 Permet à un utilisateurs de marquer son interet envers un projet et d'investir.
 Format du json à envoyer:
 {
