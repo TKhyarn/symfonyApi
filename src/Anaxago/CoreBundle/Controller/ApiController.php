@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,43 +32,67 @@ class ApiController extends Controller
     /**
      * @Rest\View()
      * @Get("/projects")
+     * @param EntityManagerInterface
      */
-    public function getProjectsAction(Request $request, EntityManagerInterface $entityManager)
+    public function getProjectsAction(EntityManagerInterface $entityManager)
     {
         $projects = $entityManager->getRepository(Project::class)->findAll();
         if (empty($projects)) {
             return View::create(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
-        $view = View::create($projects);
-        $view->setFormat('json');
-        return $view;
+        return $projects;
     }
     /**
      * @Rest\View()
      * @Get("/projects/{id}")
+     * @param EntityManagerInterface
+     * @param Request
      */
-    public function getProjectAction(Request $request, EntityManagerInterface $entityManager) {
+    public function getProjectAction(Request $request, EntityManagerInterface $entityManager)
+    {
+
         $project = $entityManager->getRepository(Project::class)->find($request->get('id'));
-        if (empty($projects)) {
+        if (empty($project)) {
             return View::create(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
-        $view = View::create($project);
-        $view->setFormat('json');
-        return $view;
+        return $project;
     }
 
     /**
      * @Rest\View()
      * @Get("/interests/{id}")
+     * @param EntityManagerInterface
+     * @param Request
      */
     public function getInterestAction(Request $request, EntityManagerInterface $entityManager)
     {
+
         $interest = $entityManager->getRepository(Interest::class)->getInterests(intval($request->get('id')));
         if (empty($interest)) {
             return new JsonResponse(['message' => 'Interests not found'], Response::HTTP_NOT_FOUND);
         }
-        $view = View::create($interest);
-        $view->setFormat('json');
-        return $view;
+        return $interest;
+    }
+
+    /**
+     * @Rest\View()
+     * @POST("/interests")
+     * @param EntityManagerInterface
+     * @param Request
+     */
+    public function postInterestAction(Request $request, EntityManagerInterface $entityManager)
+    {
+        $interest = new Interest();
+        $username = $this->getUser();
+        $project = $entityManager->getRepository(Project::class)->find($request->get('project_id'));
+
+        $interest->setUsername($username);
+        $interest->setProject($project);
+        $interest->setAmount($request->get('amount'));
+
+        $entityManager->persist($interest);
+        $entityManager->flush();
+
+        return $interest;
     }
 }

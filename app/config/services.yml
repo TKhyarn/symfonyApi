@@ -29,6 +29,26 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    auth_token_user_provider:
+        class: Anaxago\CoreBundle\Security\AuthTokenUserProvider
+        arguments: ["@auth_token_repository", "@user_repository"]
+        public:    false
+
+    auth_token_repository:
+        class:   Doctrine\ORM\EntityManager
+        factory: ["@doctrine.orm.entity_manager", "getRepository"]
+        arguments: ["AnaxagoCoreBundle:AuthToken"]
+
+    user_repository:
+        class:   Doctrine\ORM\EntityManager
+        factory: ["@doctrine.orm.entity_manager", "getRepository"]
+        arguments: ["AnaxagoCoreBundle:User"]
+
+    auth_token_authenticator:
+        class:     Anaxago\CoreBundle\Security\AuthTokenAuthenticator
+        arguments: ["@security.http_utils"]
+        public:    false
+
     # automatically injecting correct tag on every EventSubscriber extending class
     _instanceof:
         Doctrine\Common\EventSubscriber:
