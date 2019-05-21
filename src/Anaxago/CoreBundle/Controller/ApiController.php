@@ -60,14 +60,14 @@ class ApiController extends Controller
 
     /**
      * @Rest\View()
-     * @Get("/interests/{id}")
+     * @Get("/interests")
      * @param EntityManagerInterface
      * @param Request
      */
     public function getInterestAction(Request $request, EntityManagerInterface $entityManager)
     {
 
-        $interest = $entityManager->getRepository(Interest::class)->getInterests(intval($request->get('id')));
+        $interest = $entityManager->getRepository(Interest::class)->getInterests($this->getUser()->getId());
         if (empty($interest)) {
             return new JsonResponse(['message' => 'Interests not found'], Response::HTTP_NOT_FOUND);
         }
