@@ -18,7 +18,6 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,7 +37,7 @@ class ApiController extends Controller
     {
         $projects = $entityManager->getRepository(Project::class)->findAll();
         if (empty($projects)) {
-            return View::create(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
+            return View::create(['status' => 'KO','message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
         return $projects;
     }
@@ -53,7 +52,7 @@ class ApiController extends Controller
 
         $project = $entityManager->getRepository(Project::class)->find($request->get('id'));
         if (empty($project)) {
-            return View::create(['message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
+            return View::create(['status' => 'KO','message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
         return $project;
     }
@@ -69,7 +68,7 @@ class ApiController extends Controller
 
         $interest = $entityManager->getRepository(Interest::class)->getInterests($this->getUser()->getId());
         if (empty($interest)) {
-            return new JsonResponse(['message' => 'Interests not found'], Response::HTTP_NOT_FOUND);
+            return View::create(['status' => 'KO', 'message' => 'Interests not found'], Response::HTTP_NOT_FOUND);
         }
         return $interest;
     }
@@ -93,6 +92,7 @@ class ApiController extends Controller
         $entityManager->persist($interest);
         $entityManager->flush();
 
-        return $interest;
+        $entityManager->getRepository(Project::class)->putInvested($request->get('amount'),$request->get('project_id'));
+        return View::create(['status' => 'OK', 'message' => 'Interests has been added'], Response::HTTP_ACCEPTED);
     }
 }
