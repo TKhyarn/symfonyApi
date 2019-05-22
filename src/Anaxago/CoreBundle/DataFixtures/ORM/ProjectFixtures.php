@@ -31,7 +31,10 @@ class ProjectFixtures extends Fixture
                 ->setTitle($project['name'])
                 ->setDescription($project['description'])
                 ->setSlug($project['slug'])
-                ->setStatus($project['status']);
+                ->setStatus($project['status'])
+                ->setCost($project['cost'])
+                ->setInvested($project['invested']);
+
             $manager->persist($projectToPersist);
         }
         $manager->flush();
@@ -47,19 +50,25 @@ class ProjectFixtures extends Fixture
                 'name' => 'Fred de la compta',
                 'description' => 'Dépoussiérer la comptabilité grâce à l\'intelligence artificielle',
                 'slug' => 'fred-compta',
-                'status' => 'financé'
+                'status' => 'financé',
+                'cost' => '50000',
+                'invested' => '50000'
             ],
             [
                 'name' => 'Mojjo',
                 'description' => 'L\'intelligence artificielle au service du tennis : Mojjo transforme l\'expérience des joueurs et des fans de tennis grâce à une technologie unique de captation et de traitement de la donnée',
                 'slug' => 'mojjo',
-                'status' => 'non-financé'
+                'status' => 'non-financé',
+                'cost' => '50000',
+                'invested' => '49000'
             ],
             [
                 'name' => 'Eole',
                 'description' => 'Projet de construction d\'une résidence de 80 logements sociaux à Petit-Bourg en Guadeloupe par le promoteur Orion.',
                 'slug' => 'eole',
-                'status' => 'financé'
+                'status' => 'financé',
+                'cost' => '50000',
+                'invested' => '50000'
             ],
         ];
     }

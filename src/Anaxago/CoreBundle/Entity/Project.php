@@ -49,7 +49,19 @@ class Project
      */
     private $status;
 
+    /**
+     * @var float
+     * @ORM\Column(name="cost", type="float")
+     */
+    private $cost;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="invested", type="float")
+     */
+    private $invested;
+    
     /**
      * Get id
      *
@@ -154,5 +166,53 @@ class Project
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set cost
+     *
+     * @param float $cost
+     *
+     * @return Project
+     */
+    public function setCost($cost)
+    {
+        $this->cost = $cost;
+
+        return $this;
+    }
+
+    /**
+     * Get cost
+     *
+     * @return float
+     */
+    public function getCost()
+    {
+        return $this->cost;
+    }
+
+    /**
+     * Set invested
+     *
+     * @param float $invested
+     *
+     * @return Project
+     */
+    public function setInvested($invested)
+    {
+        $this->invested = $invested;
+
+        return $this;
+    }
+
+    /**
+     * Get invested
+     *
+     * @return float
+     */
+    public function getInvested()
+    {
+        return $this->invested;
     }
 }

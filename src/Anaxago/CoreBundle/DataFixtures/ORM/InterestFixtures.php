@@ -10,7 +10,7 @@ namespace Anaxago\CoreBundle\DataFixtures\ORM;
 
 use Anaxago\CoreBundle\Entity\User;
 use Anaxago\CoreBundle\Entity\Project;
-use Anaxago\CoreBundle\Entity\interest;
+use Anaxago\CoreBundle\Entity\Interest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
