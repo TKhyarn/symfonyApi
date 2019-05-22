@@ -45,17 +45,25 @@ Retourne au format json les informations du projet portant l'identifiant {id}
 ##### Post("api/auth-tokens")
 Retourne un token d'identification à rajouter dans le header : X-Auth-Token => value
 Format du json à envoyer: 
+```json
 {
-	"login":"test@mail.com",
-	"password":"test"
+	"login":"john@local.com",
+	"password":"john"
 }
+```
 ##### Get("api//interests")
 Liste les interets de l'utilisateur identifié
 
 ##### POST("api//interests")
 Permet à un utilisateurs de marquer son interet envers un projet et d'investir.
 Format du json à envoyer:
+```json
 {
 	"project_id":1,
 	"amount":2
 }
+```
+# TODO :
+- Implémenter des tests fonctionnels 
+- Renforcer la gestion d'erreur
+- Chercher du coté des events listener pour réaliser le bonus. Ou sinon comparer les valeurs des champs invested et cost. Si invested >= cost on cherche dans la table interest tous les users qui ont investi et on envoit un mail avec swiftmailer.
