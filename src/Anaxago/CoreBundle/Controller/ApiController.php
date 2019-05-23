@@ -25,17 +25,25 @@ use Symfony\Component\HttpFoundation\Request;
  * Class ApiController
  * @Route ("/api")
  */
-
 class ApiController extends Controller
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Rest\View()
+     *
      * @Get("/projects")
+     *
      * @param EntityManagerInterface
      */
-    public function getProjectsAction(EntityManagerInterface $entityManager)
+    public function getProjectsAction()
     {
-        $projects = $entityManager->getRepository(Project::class)->findAll();
+        $projects = $this->entityManager->getRepository(Project::class)->findAll();
         if (empty($projects)) {
             return View::create(['status' => 'KO','message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
@@ -43,14 +51,16 @@ class ApiController extends Controller
     }
     /**
      * @Rest\View()
+     *
      * @Get("/projects/{id}")
+     *
      * @param EntityManagerInterface
      * @param Request
      */
-    public function getProjectAction(Request $request, EntityManagerInterface $entityManager)
+    public function getProjectAction(Request $request)
     {
 
-        $project = $entityManager->getRepository(Project::class)->find($request->get('id'));
+        $project = $this->entityManager->getRepository(Project::class)->find($request->get('id'));
         if (empty($project)) {
             return View::create(['status' => 'KO','message' => 'Projects not found'], Response::HTTP_NOT_FOUND);
         }
@@ -59,14 +69,16 @@ class ApiController extends Controller
 
     /**
      * @Rest\View()
+     *
      * @Get("/interests")
+     *
      * @param EntityManagerInterface
      * @param Request
      */
-    public function getInterestAction(Request $request, EntityManagerInterface $entityManager)
+    public function getInterestAction(Request $request)
     {
 
-        $interest = $entityManager->getRepository(Interest::class)->getInterests($this->getUser()->getId());
+        $interest = $this->entityManager->getRepository(Interest::class)->getInterests($this->getUser()->getId());
         if (empty($interest)) {
             return View::create(['status' => 'KO', 'message' => 'Interests not found'], Response::HTTP_NOT_FOUND);
         }
@@ -75,7 +87,9 @@ class ApiController extends Controller
 
     /**
      * @Rest\View()
+     *
      * @POST("/interests")
+     *
      * @param EntityManagerInterface
      * @param Request
      */

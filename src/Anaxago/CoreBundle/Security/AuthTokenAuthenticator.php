@@ -19,20 +19,31 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 
+/**
+ * Class AuthTokenAuthenticator
+ * @package Anaxago\CoreBundle\Security
+ */
 class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface
 {
-    /**
-     * Durée de validité du token en secondes, 12 heures
-     */
     const TOKEN_VALIDITY_DURATION = 12 * 3600;
 
     protected $httpUtils;
 
+    /**
+     * AuthTokenAuthenticator constructor.
+     * @param HttpUtils $httpUtils
+     */
     public function __construct(HttpUtils $httpUtils)
     {
         $this->httpUtils = $httpUtils;
     }
 
+    /**
+     * @param Request $request
+     * @param $providerKey
+     *
+     * @return PreAuthenticatedToken|void
+     */
     public function createToken(Request $request, $providerKey)
     {
 
@@ -54,6 +65,13 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
         );
     }
 
+    /**
+     * @param TokenInterface $token
+     * @param UserProviderInterface $userProvider
+     * @param $providerKey
+     *
+     * @return PreAuthenticatedToken
+     */
     public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
     {
         if (!$userProvider instanceof AuthTokenUserProvider) {
@@ -85,19 +103,33 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
         return $pre;
     }
 
+    /**
+     * @param TokenInterface $token
+     * @param $providerKey
+     *
+     * @return bool
+     */
     public function supportsToken(TokenInterface $token, $providerKey)
     {
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 
     /**
-     * Vérifie la validité du token
+     * @param $authToken
+     *
+     * @return bool
      */
     private function isTokenValid($authToken)
     {
         return (time() - $authToken->getCreatedAt()->getTimestamp()) < self::TOKEN_VALIDITY_DURATION;
     }
 
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|void
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         throw $exception;
