@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiManager
 {
-    public function postInterest(EntityManagerInterface $entityManager, int $projectId, float $amount, $username) {
+    public function postInterest(EntityManagerInterface $entityManager, int $projectId, float $amount, $username, $mailer) {
         $interest = new Interest();
         $project = $entityManager->getRepository(Project::class)->find($projectId);
         if(empty($project)){
@@ -32,7 +32,13 @@ class ApiManager
         $entityManager->persist($interest);
         $entityManager->flush();
 
-        $entityManager->getRepository(Project::class)->putInvested($amount, $project);
+        $totalInvested = $entityManager->getRepository(Project::class)->putInvested($amount, $project);
+        if ($totalInvested >= $project->getCost() && $project->getEmailed() == 0) {
+            //Send mail here
+            $project->setEmailed(1);
+            $entityManager->persist($project);
+            $entityManager->flush();
+        }
         return View::create(['status' => 'OK', 'message' => 'Interests has been added'], Response::HTTP_ACCEPTED);
     }
 }

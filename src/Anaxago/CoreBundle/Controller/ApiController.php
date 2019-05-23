@@ -101,6 +101,6 @@ class ApiController extends Controller
         $username = $this->getUser();
         $projectId = $request->get('project_id');
         $amount = $request->get('amount');
-        return $apiManager->postInterest($entityManager, $projectId, $amount, $username);
+        return $apiManager->postInterest($entityManager, $projectId, $amount, $username, $this->get('mailer'));
     }
 }

@@ -33,7 +33,8 @@ class ProjectFixtures extends Fixture
                 ->setSlug($project['slug'])
                 ->setStatus($project['status'])
                 ->setCost($project['cost'])
-                ->setInvested($project['invested']);
+                ->setInvested($project['invested'])
+                ->setEmailed($project['emailed']);
 
             $manager->persist($projectToPersist);
         }
@@ -52,7 +53,8 @@ class ProjectFixtures extends Fixture
                 'slug' => 'fred-compta',
                 'status' => 'financé',
                 'cost' => '50000',
-                'invested' => '50000'
+                'invested' => '50000',
+                'emailed' => '1'
             ],
             [
                 'name' => 'Mojjo',
@@ -60,7 +62,8 @@ class ProjectFixtures extends Fixture
                 'slug' => 'mojjo',
                 'status' => 'non-financé',
                 'cost' => '50000',
-                'invested' => '49000'
+                'invested' => '49000',
+                'emailed' => '0'
             ],
             [
                 'name' => 'Eole',
@@ -68,7 +71,8 @@ class ProjectFixtures extends Fixture
                 'slug' => 'eole',
                 'status' => 'financé',
                 'cost' => '50000',
-                'invested' => '50000'
+                'invested' => '50000',
+                'emailed' => '1'
             ],
         ];
     }

@@ -25,6 +25,6 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter(':id', $id)
             ->getQuery()
             ->execute();
-
+        return $totalInvested;
     }
 }
