@@ -17,7 +17,7 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
     public function putInvested(float $invested, $project)
     {
         $id = $project->getId();
-        $totalInvested = $project->getCost() + $invested;
+        $totalInvested = $project->getInvested() + $invested;
         $this->createQueryBuilder('p')
             ->update()
             ->set('p.invested', $totalInvested)
