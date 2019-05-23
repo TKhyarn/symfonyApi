@@ -10,16 +10,19 @@ namespace Anaxago\CoreBundle\Controller;
 
 use Anaxago\CoreBundle\Entity\Project;
 use Anaxago\CoreBundle\Entity\Interest;
+use Anaxago\CoreBundle\Services\ApiManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\View\View;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
+
+
 
 /**
  * Class ApiController
@@ -93,20 +96,11 @@ class ApiController extends Controller
      * @param EntityManagerInterface
      * @param Request
      */
-    public function postInterestAction(Request $request, EntityManagerInterface $entityManager)
+    public function postInterestAction(Request $request, EntityManagerInterface $entityManager, ApiManager $apiManager)
     {
-        $interest = new Interest();
         $username = $this->getUser();
-        $project = $entityManager->getRepository(Project::class)->find($request->get('project_id'));
-
-        $interest->setUsername($username);
-        $interest->setProject($project);
-        $interest->setAmount($request->get('amount'));
-
-        $entityManager->persist($interest);
-        $entityManager->flush();
-
-        $entityManager->getRepository(Project::class)->putInvested($request->get('amount'),$request->get('project_id'));
-        return View::create(['status' => 'OK', 'message' => 'Interests has been added'], Response::HTTP_ACCEPTED);
+        $projectId = $request->get('project_id');
+        $amount = $request->get('amount');
+        return $apiManager->postInterest($entityManager, $projectId, $amount, $username);
     }
 }
