@@ -17,6 +17,7 @@ use Anaxago\CoreBundle\Form\Type\CredentialsType;
 use Anaxago\CoreBundle\Entity\AuthToken;
 use Anaxago\CoreBundle\Entity\Credentials;
 use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\View\View;
 
 /**
  * Class AuthTokenController
@@ -28,6 +29,12 @@ class AuthTokenController extends Controller
     /**
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"auth-token"})
      * @Rest\Post("/auth-tokens")
+     *
+     * @param Request $request
+     *
+     * @return AuthToken|\FOS\RestBundle\View\View|\Symfony\Component\Form\FormInterface
+     *
+     * @throws \Exception
      */
     public function postAuthTokensAction(Request $request)
     {
@@ -67,8 +74,11 @@ class AuthTokenController extends Controller
         return $authToken;
     }
 
+    /**
+     * @return View
+     */
     private function invalidCredentials()
     {
-        return \FOS\RestBundle\View\View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
+        return View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
     }
 }

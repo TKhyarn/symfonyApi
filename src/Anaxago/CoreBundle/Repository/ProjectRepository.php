@@ -10,6 +10,10 @@ namespace Anaxago\CoreBundle\Repository;
  */
 class ProjectRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param float $invested
+     * @param int $id
+     */
     public function putInvested(float $invested, int $id)
     {
         $this->getEntityManager()->createQuery('

@@ -12,6 +12,10 @@ use Doctrine\ORM\QueryBuilder;
  */
 class InterestRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param int $userId
+     * @return array
+     */
     public function getInterests(int $userId)
     {
         return $this->createQueryBuilder('i')
