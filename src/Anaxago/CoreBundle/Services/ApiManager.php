@@ -31,6 +31,8 @@ class ApiManager
 
         $entityManager->persist($interest);
         $entityManager->flush();
+
+        $entityManager->getRepository(Project::class)->putInvested($amount, $project);
         return View::create(['status' => 'OK', 'message' => 'Interests has been added'], Response::HTTP_ACCEPTED);
     }
 }

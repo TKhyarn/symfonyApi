@@ -14,15 +14,16 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
      * @param float $invested
      * @param int $id
      */
-    public function putInvested(float $invested, int $id)
+    public function putInvested(float $invested, $project)
     {
-        $this->getEntityManager()->createQuery('
-            UPDATE Anaxago\CoreBundle\Entity\Project p
-            SET p.invested = p.invested + :add
-            WHERE p.id = :id
-            ')
-            ->setParameter(':add', $invested)
+        $id = $project->getId();
+        $totalInvested = $project->getCost() + $invested;
+        $this->createQueryBuilder('p')
+            ->update()
+            ->set('p.invested', $totalInvested)
+            ->where('p.id = :id')
             ->setParameter(':id', $id)
+            ->getQuery()
             ->execute();
 
     }
