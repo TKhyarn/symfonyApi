@@ -51,10 +51,10 @@ Format du json à envoyer:
 	"password":"john"
 }
 ```
-##### Get("api//interests")
+##### Get("api/interests")
 Liste les interets de l'utilisateur identifié
 
-##### POST("api//interests")
+##### POST("api/interests")
 Permet à un utilisateurs de marquer son interet envers un projet et d'investir.
 Format du json à envoyer:
 ```json
