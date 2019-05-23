@@ -61,6 +61,13 @@ class Project
      * @ORM\Column(name="invested", type="float")
      */
     private $invested;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="emailed", type="boolean")
+     */
+    private $emailed;
     
     /**
      * Get id
@@ -214,5 +221,29 @@ class Project
     public function getInvested()
     {
         return $this->invested;
+    }
+
+    /**
+     * Set emailed
+     *
+     * @param boolean $emailed
+     *
+     * @return Project
+     */
+    public function setEmailed($emailed)
+    {
+        $this->emailed = $emailed;
+
+        return $this;
+    }
+
+    /**
+     * Get emailed
+     *
+     * @return boolean
+     */
+    public function getEmailed()
+    {
+        return $this->emailed;
     }
 }
