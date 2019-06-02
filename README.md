@@ -66,4 +66,4 @@ Format du json à envoyer:
 # TODO :
 - Implémenter des tests fonctionnels 
 - Renforcer la gestion d'erreur
-- Chercher du coté des events listener pour réaliser le bonus. Ou sinon comparer les valeurs des champs invested et cost. Si invested >= cost on cherche dans la table interest tous les users qui ont investi et on envoit un mail avec swiftmailer.
+- Chercher du coté des events listener pour réaliser mailer les investisseurs lorsque le projet est financé. Ou sinon comparer les valeurs des champs invested et cost. Si invested >= cost on cherche dans la table interest tous les users qui ont investi et on envoit un mail avec swiftmailer.
